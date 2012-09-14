@@ -2,7 +2,7 @@ import urllib2
 import json
 
 def make_hist(alliance):
-    raw = urllib2.urlopen('http://eve-kill.net/epic/victimAlliance:'+alliance+'/startDate:09-01-12.12.0.0/mask:1048576').read()
+    raw = urllib2.urlopen('http://eve-kill.net/epic/victimAlliance:'+alliance+'/startDate:08-01-12.12.0.0/endDate:08-31-12.12.0.0/mask:1048576').read()
     parsed = json.loads(raw)
     rawitems = []
     # pull the items out from the individual killmails and put them all in one list
@@ -25,11 +25,13 @@ def make_hist(alliance):
 def merge(h1, h2):
     orig = set([x[0] for x in h1])
     ret = h1
+    temp = []
     for item in h2:
         if item[0] in orig:
             ret[find(item[0],h1)][1] = ret[find(item[0],h1)][1] + item[1]
         else:
-            ret.append(item)
+            temp.append(item)
+    ret.extend(temp)
     return ret
 
 def find(item,li):
